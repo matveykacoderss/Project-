@@ -3,123 +3,1031 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Плагины для Minecraft</title>
+    <title>PluginVerse - Магазин премиум плагинов для Minecraft</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #333;
-            color: white;
+        /* Основные стили и сброс */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
         }
-        header {
-            background-color: #4B0082; /* Темный фиолетовый */
-            text-align: center;
-            padding: 20px;
+
+        :root {
+            --primary: #4a148c;
+            --primary-dark: #38006b;
+            --primary-light: #7c43bd;
+            --accent: #f50057;
+            --accent-dark: #bb002f;
+            --accent-light: #ff5983;
+            --text-light: #f8f9fa;
+            --text-dark: #343a40;
+            --background: #121212;
+            --background-light: #1e1e1e;
+            --background-card: rgba(30, 30, 30, 0.8);
+            --success: #00c853;
         }
-        nav {
-            background-color: #483D8B; /* Еще темнее фиолетовый */
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            background-color: var(--background);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Космический фон */
+        .space-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             overflow: hidden;
         }
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
+
+        /* Звезды */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
-        nav li {
-            float: left;
+
+        .star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            animation-delay: var(--delay);
         }
-        nav a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 14px 16px;
-            transition: all 0.3s ease;
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
         }
-        nav a:hover {
-            background-color: #191970; /* Самый темный фиолетовый */
+
+        /* Планеты */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: inset 10px -10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+            animation: rotate var(--duration) infinite linear;
         }
-        .content {
-            padding: 20px;
+
+        .planet1 {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            right: 10%;
+            background: radial-gradient(circle at 30% 30%, #9c27b0, #4a148c);
+            --duration: 240s;
         }
-        h1, h2, h3 {
-            color: #9370DB; /* Светлый фиолетовый */
+
+        .planet2 {
+            width: 80px;
+            height: 80px;
+            bottom: 10%;
+            left: 15%;
+            background: radial-gradient(circle at 30% 30%, #651fff, #311b92);
+            --duration: 180s;
         }
-        footer {
-            background-color: #483D8B;
-            text-align: center;
-            padding: 10px;
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Навигация */
+        .navbar {
             position: fixed;
-            bottom: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(18, 18, 18, 0.95);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            padding: 15px 50px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-light);
+            background: linear-gradient(45deg, #7c43bd, #f50057);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            position: relative;
+            transition: color 0.3s;
+            padding: 5px 10px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-light), var(--accent));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-light);
+        }
+
+        .nav-link:hover::after {
             width: 100%;
         }
-        footer p {
-            margin: 0;
+
+        /* Кнопки */
+        .btn {
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: var(--text-light);
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(74, 20, 140, 0.4);
+            outline: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(74, 20, 140, 0.6);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(74, 20, 140, 0.4);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(245, 0, 87, 0.4);
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-dark);
+            box-shadow: 0 8px 20px rgba(245, 0, 87, 0.6);
+        }
+
+        /* Герой-секция */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 100px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards;
+            animation-delay: 0.5s;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(45deg, var(--primary-light), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: rgba(248, 249, 250, 0.8);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Основные разделы */
+        section {
+            padding: 100px 50px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        /* Плагины */
+        .plugins-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .plugin-card {
+            background-color: var(--background-card);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .plugin-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .plugin-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .plugin-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .plugin-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .plugin-card:hover .plugin-image img {
+            transform: scale(1.1);
+        }
+
+        .plugin-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .plugin-content {
+            padding: 25px;
+        }
+
+        .plugin-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .plugin-description {
+            color: rgba(248, 249, 250, 0.8);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .plugin-price {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            margin-bottom: 20px;
+        }
+
+        .plugin-features {
+            margin-bottom: 20px;
+        }
+
+        .plugin-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .plugin-feature-icon {
+            margin-right: 10px;
+            color: var(--success);
+        }
+
+        /* Преимущества */
+        .features-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background-color: var(--background-card);
+            border-radius: 15px;
+            padding: 30px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 380px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .feature-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .feature-description {
+            color: rgba(248, 249, 250, 0.8);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Контакты */
+        .contact-section {
+            background-color: var(--background-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .contact-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .contact-description {
+            color: rgba(248, 249, 250, 0.8);
+            margin-bottom: 30px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .contact-details {
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .contact-text {
+            color: rgba(248, 249, 250, 0.9);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: rgba(248, 249, 250, 0.9);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(245, 0, 87, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Подвал */
+        footer {
+            background-color: var(--background);
+            padding: 50px 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 50px;
+        }
+
+        .footer-top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 50px;
+            justify-content: space-between;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 1.5px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-link {
+            margin-bottom: 10px;
+        }
+
+        .footer-link a {
+            color: rgba(248, 249, 250, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            padding: 3px 0;
+        }
+
+        .footer-link a:hover {
+            color: var(--accent-light);
+            padding-left: 5px;
+        }
+
+        .footer-text {
+            color: rgba(248, 249, 250, 0.7);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .copyright {
+            color: rgba(248, 249, 250, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .animate-float {
+            animation: floatUpDown 8s ease-in-out infinite;
+        }
+
+        /* Кнопка прокрутки вверх */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, background-color 0.3s, transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        /* Медиа-запросы */
+        @media (max-width: 1024px) {
+            .hero {
+                padding: 0 50px;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .navbar {
+                padding: 15px 30px;
+            }
+
+            .navbar.scrolled {
+                padding: 12px 30px;
+            }
+
+            section {
+                padding: 80px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+
+            .hero {
+                text-align: center;
+                padding: 0 30px;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .contact-container, .footer-top {
+                flex-direction: column;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .contact-form {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .plugin-card, .feature-card {
+                min-width: 100%;
+            }
+        }
+
+        /* Гамбургер меню для мобильных устройств */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                max-width: 300px;
+                background-color: var(--background-light);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 100;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .preloader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 100px;
+            height: 100px;
+            border: 5px solid transparent;
+            border-top-color: var(--primary);
+            border-bottom-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Класс для темной модальной подложки */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
 <body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
 
-<header>
-    <h1>Плагины для Minecraft</h1>
-</header>
+    <!-- Космический фон -->
+    <div class="space-background">
+        <div class="stars" id="stars"></div>
+        <div class="planet planet1"></div>
+        <div class="planet planet2"></div>
+    </div>
 
-<nav>
-    <ul>
-        <li><a href="#about">Обо мне</a></li>
-        <li><a href="#projects">Проекты</a></li>
-        <li><a href="#contacts">Контакты</a></li>
-        <li><a href="#collaboration">Сотрудничество</a></li>
-        <li><a href="#purchase">Покупка</a></li>
-    </ul>
-</nav>
+    <!-- Модальная подложка для мобильного меню -->
+    <div class="modal-backdrop" id="modalBackdrop"></div>
 
-<div class="content">
-    
-    <!-- Секция Обо мне -->
-    <section id="about">
-        <h2>Обо мне</h2>
-        <p>Здесь расскажи немного о себе: кто ты, чем занимаешься, почему начал создавать плагины для Minecraft.</p>
+    <!-- Навигация -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="logo-text">PluginVerse</div>
+        </a>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="#" class="nav-link">Главная</a>
+            <a href="#plugins" class="nav-link">Плагины</a>
+            <a href="#features" class="nav-link">Преимущества</a>
+            <a href="#contact" class="nav-link">Контакты</a>
+            <a href="#" class="nav-link">Обо мне</a>
+        </div>
+    </nav>
+
+    <!-- Герой-секция -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Премиум плагины для вашего сервера Minecraft</h1>
+            <p class="hero-subtitle">Улучшите функциональность вашего сервера с нашими высококачественными плагинами. Разработано с любовью и заботой о деталях.</p>
+            <div class="hero-buttons">
+                <a href="#plugins" class="btn btn-accent">Смотреть плагины</a>
+                <a href="#contact" class="btn">Связаться с нами</a>
+            </div>
+        </div>
     </section>
 
-    <!-- Секция Проекты -->
-    <section id="projects">
-        <h2>Проекты</h2>
-        <p>Опиши свои проекты: какие плагины уже созданы, какие функции они выполняют, возможно, есть скриншоты или видео.</p>
-    </section>
-
-    <!-- Секция Контакты -->
-    <section id="contacts">
-        <h2>Контакты</h2>
-        <p>Укажи свои контактные данные: email, социальные сети, Discord и т.п.<br>
-        Email: <a href="mailto:example@example.com">example@example.com</a><br>
-        Discord: <a href="https://discord.gg/123456789">Присоединяйся к моему серверу</a><br>
-        Социальные сети: <a href="https://twitter.com/yourusername">Twitter</a>,
-                        <a href="https://www.instagram.com/yourusername">Instagram</a>
-        </p>
-    </section>
-
-    <!-- Секция Сотрудничество -->
-    <section id="collaboration">
-        <h2>Сотрудничество</h2>
-        <p>Напиши, каким образом можно сотрудничать с тобой: заказ разработки плагина, совместная работа над проектом и т.д.</p>
-    </section>
-
-    <!-- Секция Покупка -->
-    <section id="purchase">
-        <h2>Покупка</h2>
-        <p>Покупка производится у овнера<br>
-        <a href="t.me/anticheatik">Купить на Напрямую</a><br>
-        </p>
-    </section>
-
-</div>
-
-<footer>
-    <p>&copy; Все правы выкуплены и защищены.</p>
-</footer>
-
-</body>
-</html>
+    <!-- Секция плагинов -->
+    <section id="plugins">
+        <h2 class="section-title">Наши плагины</h2>
+        <div class="plugins-container">
+            <!-- Плагин 1 -->
+            <div class="plugin-card">
+                <div class="plugin-image">
+                    <img src="/api/placeholder/400/320" alt="Плагин Beautiful Menu">
+                    <span class="plugin-badge">Хит продаж</span>
+                </div>
+                <div class="plugin-content">
+                    <h3 class="plugin-title">Beautiful Menu</h3>
+                    <p class="plugin-description">Стильное и удобное меню для вашего сервера с поддержкой анимаций и полной настройкой.</p>
+                    <span class="plugin-price">300 ₽</span>
+                    <div class="plugin-features">
+                        <div class="plugin-feature">
+                            <span class="plugin-feature-icon">✓</span>
+                            <span>Полная настройка внешнего вида</span>
+                        </div>
+                        <div class="plugin-feature">
+                            <span class="plugin-feature-icon">✓</span>
+                            <span>Интеграция с экономикой</span>
+                        </div>
+                        <div class="plugin-
