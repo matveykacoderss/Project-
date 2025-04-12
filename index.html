@@ -3,1031 +3,781 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PluginVerse - Магазин премиум плагинов для Minecraft</title>
+    <title>Космический Донат Центр Minecraft</title>
     <style>
-        /* Основные стили и сброс */
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap');
+        
+        :root {
+            --yellow: #FFD700;
+            --purple: #9932CC;
+            --red: #FF4500;
+            --dark: #0A0E17;
+            --light: #E8E8E8;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Exo 2', sans-serif;
         }
-
-        :root {
-            --primary: #4a148c;
-            --primary-dark: #38006b;
-            --primary-light: #7c43bd;
-            --accent: #f50057;
-            --accent-dark: #bb002f;
-            --accent-light: #ff5983;
-            --text-light: #f8f9fa;
-            --text-dark: #343a40;
-            --background: #121212;
-            --background-light: #1e1e1e;
-            --background-card: rgba(30, 30, 30, 0.8);
-            --success: #00c853;
-        }
-
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
-
+        
         body {
-            background-color: var(--background);
-            color: var(--text-light);
-            line-height: 1.6;
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
-
-        /* Космический фон */
+        
+        /* Анимированный космический фон */
         .space-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            z-index: -2;
             overflow: hidden;
+            background: linear-gradient(125deg, #000235, #1a0042, #220047);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
         }
-
-        /* Звезды */
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
         .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 4s) infinite;
+        }
+        
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            box-shadow: 0 0 10px 2px white;
+            opacity: 0;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Туманности и космические объекты */
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.15;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .nebula1 {
+            width: 300px;
+            height: 300px;
+            background-color: var(--purple);
+            top: 15%;
+            left: 10%;
+            animation: floatNebula 20s infinite alternate;
+        }
+        
+        .nebula2 {
+            width: 250px;
+            height: 250px;
+            background-color: var(--red);
+            bottom: 20%;
+            right: 15%;
+            animation: floatNebula 25s infinite alternate-reverse;
+        }
+        
+        .nebula3 {
+            width: 200px;
+            height: 200px;
+            background-color: var(--yellow);
+            top: 70%;
+            left: 25%;
+            animation: floatNebula 18s infinite alternate;
+        }
+        
+        @keyframes floatNebula {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 20px) scale(1.1); }
+            100% { transform: translate(-30px, -20px) scale(0.9); }
+        }
+        
+        /* Анимация планеты */
+        .planet {
+            position: fixed;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #330033, #660066);
+            box-shadow: 0 0 50px rgba(153, 50, 204, 0.5), inset 20px -20px 60px rgba(0, 0, 0, 0.6);
+            right: 10%;
+            top: 20%;
+            z-index: -1;
+            animation: rotatePlanet 40s linear infinite;
+        }
+        
+        .planet::before {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 30px;
+            background: rgba(255, 215, 0, 0.2);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(80deg);
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+        
+        @keyframes rotatePlanet {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Shooting stars animation */
+        @keyframes shootingStar {
+            0% {
+                transform: translateX(0) translateY(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(var(--travel-x, -500px)) translateY(var(--travel-y, 300px));
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid var(--purple);
+            background: rgba(10, 14, 23, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--yellow);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            animation: glow 3s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6); }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--light);
+        }
+        
+        .free-label {
+            display: inline-block;
+            background-color: var(--red);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-button {
+            background-color: rgba(10, 14, 23, 0.7);
+            border: 2px solid var(--purple);
+            color: var(--light);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+        
+        .nav-button:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(153, 50, 204, 0.4), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+        
+        .nav-button:hover:before {
+            left: 100%;
+        }
+        
+        .nav-button:hover {
+            border-color: var(--yellow);
+            box-shadow: 0 0 15px rgba(153, 50, 204, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        .donations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .donation-card {
+            background-color: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            position: relative;
+        }
+        
+        .donation-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+        
+        .donation-card:nth-child(1) {
+            border: 2px solid var(--yellow);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .donation-card:nth-child(2) {
+            border: 2px solid var(--purple);
+            box-shadow: 0 0 20px rgba(153, 50, 204, 0.3);
+        }
+        
+        .donation-card:nth-child(3) {
+            border: 2px solid var(--red);
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
+        }
+        
+        .donation-card:nth-child(1):hover {
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+        
+        .donation-card:nth-child(2):hover {
+            box-shadow: 0 0 30px rgba(153, 50, 204, 0.5);
+        }
+        
+        .donation-card:nth-child(3):hover {
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
+        }
+        
+        /* Particles inside donation cards */
+        .card-particles {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-        }
-
-        .star {
-            position: absolute;
-            background-color: #ffffff;
-            border-radius: 50%;
+            overflow: hidden;
+            pointer-events: none;
             opacity: 0;
-            animation: twinkle var(--duration) infinite ease-in-out;
-            animation-delay: var(--delay);
+            transition: opacity 0.5s ease;
         }
-
-        @keyframes twinkle {
-            0% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
+        
+        .donation-card:hover .card-particles {
+            opacity: 1;
         }
-
-        /* Планеты */
-        .planet {
+        
+        .particle {
             position: absolute;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
-            box-shadow: inset 10px -10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
-            animation: rotate var(--duration) infinite linear;
+            animation: floatParticle 3s infinite ease-in-out;
         }
-
-        .planet1 {
-            width: 120px;
-            height: 120px;
-            top: 15%;
-            right: 10%;
-            background: radial-gradient(circle at 30% 30%, #9c27b0, #4a148c);
-            --duration: 240s;
+        
+        .donation-card:nth-child(1) .particle {
+            background-color: var(--yellow);
+            box-shadow: 0 0 5px var(--yellow);
         }
-
-        .planet2 {
-            width: 80px;
-            height: 80px;
-            bottom: 10%;
-            left: 15%;
-            background: radial-gradient(circle at 30% 30%, #651fff, #311b92);
-            --duration: 180s;
+        
+        .donation-card:nth-child(2) .particle {
+            background-color: var(--purple);
+            box-shadow: 0 0 5px var(--purple);
         }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
+        
+        .donation-card:nth-child(3) .particle {
+            background-color: var(--red);
+            box-shadow: 0 0 5px var(--red);
         }
-
-        /* Навигация */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            transition: background-color 0.3s, box-shadow 0.3s;
+        
+        @keyframes floatParticle {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
         }
-
-        .navbar.scrolled {
-            background-color: rgba(18, 18, 18, 0.95);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-            padding: 15px 50px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .logo-img {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-        }
-
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-light);
-            background: linear-gradient(45deg, #7c43bd, #f50057);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+        
+        .donation-header {
+            padding: 1.5rem;
+            text-align: center;
             position: relative;
         }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
+        
+        .donation-card:nth-child(1) .donation-header {
+            background: linear-gradient(to right, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.4));
         }
-
-        .nav-link {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 500;
+        
+        .donation-card:nth-child(2) .donation-header {
+            background: linear-gradient(to right, rgba(153, 50, 204, 0.2), rgba(153, 50, 204, 0.4));
+        }
+        
+        .donation-card:nth-child(3) .donation-header {
+            background: linear-gradient(to right, rgba(255, 69, 0, 0.2), rgba(255, 69, 0, 0.4));
+        }
+        
+        .donation-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .donation-card:nth-child(1) .donation-title {
+            color: var(--yellow);
+        }
+        
+        .donation-card:nth-child(2) .donation-title {
+            color: var(--purple);
+        }
+        
+        .donation-card:nth-child(3) .donation-title {
+            color: var(--red);
+        }
+        
+        .donation-price {
             font-size: 1.1rem;
-            position: relative;
-            transition: color 0.3s;
-            padding: 5px 10px;
+            text-decoration: line-through;
+            color: rgba(232, 232, 232, 0.7);
+            margin-bottom: 0.5rem;
+            display: block;
         }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(to right, var(--primary-light), var(--accent));
-            transition: width 0.3s ease;
+        
+        .donation-free {
+            color: var(--light);
+            font-weight: bold;
+            font-size: 1.3rem;
         }
-
-        .nav-link:hover {
-            color: var(--accent-light);
+        
+        .donation-content {
+            padding: 1.5rem;
         }
-
-        .nav-link:hover::after {
-            width: 100%;
+        
+        .feature-list {
+            list-style: none;
+            margin-bottom: 2rem;
         }
-
-        /* Кнопки */
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list li:before {
+            content: "✦";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .donation-card:nth-child(1) .feature-list li:before {
+            color: var(--yellow);
+        }
+        
+        .donation-card:nth-child(2) .feature-list li:before {
+            color: var(--purple);
+        }
+        
+        .donation-card:nth-child(3) .feature-list li:before {
+            color: var(--red);
+        }
+        
         .btn {
-            padding: 12px 25px;
-            background-color: var(--primary);
-            color: var(--text-light);
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
             border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            text-transform: uppercase;
+            border-radius: 50px;
             cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(74, 20, 140, 0.4);
-            outline: none;
-            text-decoration: none;
-            display: inline-block;
+            z-index: 1;
+            color: var(--dark);
+            background-color: var(--yellow);
         }
-
-        .btn::before {
-            content: '';
+        
+        .donation-card:nth-child(1) .btn {
+            background-color: var(--yellow);
+        }
+        
+        .donation-card:nth-child(2) .btn {
+            background-color: var(--purple);
+            color: var(--light);
+        }
+        
+        .donation-card:nth-child(3) .btn {
+            background-color: var(--red);
+            color: var(--light);
+        }
+        
+        .btn:before {
+            content: "";
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
+            transition: all 0.6s ease;
+            z-index: -1;
         }
-
-        .btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(74, 20, 140, 0.6);
-        }
-
-        .btn:hover::before {
+        
+        .btn:hover:before {
             left: 100%;
         }
-
-        .btn:active {
-            transform: translateY(0);
-            box-shadow: 0 3px 10px rgba(74, 20, 140, 0.4);
-        }
-
-        .btn-accent {
-            background-color: var(--accent);
-            box-shadow: 0 5px 15px rgba(245, 0, 87, 0.4);
-        }
-
-        .btn-accent:hover {
-            background-color: var(--accent-dark);
-            box-shadow: 0 8px 20px rgba(245, 0, 87, 0.6);
-        }
-
-        /* Герой-секция */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 100px;
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 600px;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 1s forwards;
-            animation-delay: 0.5s;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            background: linear-gradient(45deg, var(--primary-light), var(--accent-light));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: rgba(248, 249, 250, 0.8);
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-        }
-
-        /* Основные разделы */
-        section {
-            padding: 100px 50px;
-            position: relative;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 50px;
-            text-align: center;
-            position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s, transform 0.6s;
-        }
-
-        .section-title.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            border-radius: 2px;
-        }
-
-        /* Плагины */
-        .plugins-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        .plugin-card {
-            background-color: var(--background-card);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .plugin-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .plugin-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .plugin-image {
-            height: 180px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .plugin-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .plugin-card:hover .plugin-image img {
-            transform: scale(1.1);
-        }
-
-        .plugin-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: var(--accent);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .plugin-content {
-            padding: 25px;
-        }
-
-        .plugin-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .plugin-description {
-            color: rgba(248, 249, 250, 0.8);
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .plugin-price {
-            display: block;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent-light);
-            margin-bottom: 20px;
-        }
-
-        .plugin-features {
-            margin-bottom: 20px;
-        }
-
-        .plugin-feature {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        .plugin-feature-icon {
-            margin-right: 10px;
-            color: var(--success);
-        }
-
-        /* Преимущества */
-        .features-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .feature-card {
-            background-color: var(--background-card);
-            border-radius: 15px;
-            padding: 30px;
-            flex: 1;
-            min-width: 300px;
-            max-width: 380px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .feature-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            color: white;
-            font-size: 1.8rem;
-        }
-
-        .feature-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: white;
-        }
-
-        .feature-description {
-            color: rgba(248, 249, 250, 0.8);
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
-        /* Контакты */
-        .contact-section {
-            background-color: var(--background-light);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .contact-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        .contact-info {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .contact-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: white;
-        }
-
-        .contact-description {
-            color: rgba(248, 249, 250, 0.8);
-            margin-bottom: 30px;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        .contact-details {
-            margin-bottom: 30px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            background-color: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: white;
-            font-size: 1.1rem;
-        }
-
-        .contact-text {
-            color: rgba(248, 249, 250, 0.9);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-link {
-            width: 45px;
-            height: 45px;
-            background-color: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .social-link:hover {
-            background-color: var(--accent);
-            transform: translateY(-5px);
-        }
-
-        .contact-form {
-            flex: 1;
-            min-width: 300px;
-            background-color: rgba(30, 30, 30, 0.8);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: rgba(248, 249, 250, 0.9);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s;
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--accent);
-            background-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 0 3px rgba(245, 0, 87, 0.25);
-        }
-
-        .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        textarea.form-control {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        /* Подвал */
-        footer {
-            background-color: var(--background);
-            padding: 50px 0 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 50px;
-        }
-
-        .footer-top {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: 50px;
-            justify-content: space-between;
-        }
-
-        .footer-col {
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .footer-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: white;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            border-radius: 1.5px;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-link {
-            margin-bottom: 10px;
-        }
-
-        .footer-link a {
-            color: rgba(248, 249, 250, 0.7);
-            text-decoration: none;
-            transition: color 0.3s;
-            display: block;
-            padding: 3px 0;
-        }
-
-        .footer-link a:hover {
-            color: var(--accent-light);
-            padding-left: 5px;
-        }
-
-        .footer-text {
-            color: rgba(248, 249, 250, 0.7);
-            margin-bottom: 20px;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
-        .footer-bottom {
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-
-        .copyright {
-            color: rgba(248, 249, 250, 0.5);
-            font-size: 0.9rem;
-        }
-
-        /* Анимации */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes floatUpDown {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-
-        .animate-float {
-            animation: floatUpDown 8s ease-in-out infinite;
-        }
-
-        /* Кнопка прокрутки вверх */
-        .scroll-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            z-index: 99;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s, background-color 0.3s, transform 0.3s;
+        
+        .btn:hover {
+            transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-
-        .scroll-to-top.visible {
-            opacity: 1;
-            visibility: visible;
+        
+        .donation-card:nth-child(1) .btn:hover {
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
         }
-
-        .scroll-to-top:hover {
-            background-color: var(--accent);
-            transform: translateY(-5px);
+        
+        .donation-card:nth-child(2) .btn:hover {
+            box-shadow: 0 5px 15px rgba(153, 50, 204, 0.5);
         }
-
-        /* Медиа-запросы */
-        @media (max-width: 1024px) {
-            .hero {
-                padding: 0 50px;
-            }
-
-            .hero-title {
-                font-size: 3rem;
-            }
-
-            .navbar {
-                padding: 15px 30px;
-            }
-
-            .navbar.scrolled {
-                padding: 12px 30px;
-            }
-
-            section {
-                padding: 80px 30px;
-            }
+        
+        .donation-card:nth-child(3) .btn:hover {
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.5);
         }
-
-        @media (max-width: 768px) {
-            .navbar .nav-links {
-                display: none;
-            }
-
-            .hero {
-                text-align: center;
-                padding: 0 30px;
-            }
-
-            .hero-content {
-                max-width: 100%;
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-
-            .hero-buttons {
-                justify-content: center;
-            }
-
-            .contact-container, .footer-top {
-                flex-direction: column;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .contact-form {
-                padding: 25px;
-            }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 2px solid var(--purple);
+            background: rgba(10, 14, 23, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
         }
-
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .btn {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
-
-            .section-title {
-                font-size: 1.8rem;
-            }
-
-            .plugin-card, .feature-card {
-                min-width: 100%;
-            }
+        
+        .footer-text {
+            margin-bottom: 1rem;
         }
-
-        /* Гамбургер меню для мобильных устройств */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            z-index: 101;
-        }
-
-        .menu-toggle span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin-bottom: 5px;
-            border-radius: 3px;
-            transition: transform 0.3s, opacity 0.3s;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                height: 100vh;
-                width: 70%;
-                max-width: 300px;
-                background-color: var(--background-light);
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                z-index: 100;
-                transition: right 0.3s ease;
-                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
-            }
-
-            .nav-links.active {
-                right: 0;
-            }
-
-            .menu-toggle.active span:nth-child(1) {
-                transform: translateY(8px) rotate(45deg);
-            }
-
-            .menu-toggle.active span:nth-child(2) {
-                opacity: 0;
-            }
-
-            .menu-toggle.active span:nth-child(3) {
-                transform: translateY(-8px) rotate(-45deg);
-            }
-        }
-
-        /* Preloader */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--background);
+        
+        .social-links {
             display: flex;
             justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s, visibility 0.5s;
+            gap: 1rem;
         }
-
-        .preloader.loaded {
-            opacity: 0;
-            visibility: hidden;
+        
+        .social-link {
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
         }
-
-        .loader {
-            width: 100px;
-            height: 100px;
-            border: 5px solid transparent;
-            border-top-color: var(--primary);
-            border-bottom-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1.5s linear infinite;
+        
+        .social-link:hover {
+            color: var(--yellow);
         }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
             }
-            to {
-                transform: rotate(360deg);
+            
+            .subtitle {
+                font-size: 1.2rem;
             }
-        }
-
-        /* Класс для темной модальной подложки */
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(3px);
-            z-index: 50;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-
-        .modal-backdrop.active {
-            opacity: 1;
-            visibility: visible;
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-button {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .planet {
+                width: 100px;
+                height: 100px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader"></div>
-    </div>
-
-    <!-- Космический фон -->
-    <div class="space-background">
-        <div class="stars" id="stars"></div>
-        <div class="planet planet1"></div>
-        <div class="planet planet2"></div>
-    </div>
-
-    <!-- Модальная подложка для мобильного меню -->
-    <div class="modal-backdrop" id="modalBackdrop"></div>
-
-    <!-- Навигация -->
-    <nav class="navbar">
-        <a href="#" class="logo">
-            <div class="logo-text">PluginVerse</div>
-        </a>
-        <div class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
+    <div class="space-background"></div>
+    <div class="stars" id="stars"></div>
+    <div class="nebula nebula1"></div>
+    <div class="nebula nebula2"></div>
+    <div class="nebula nebula3"></div>
+    <div class="planet"></div>
+    
+    <div class="container">
+        <header>
+            <h1>КОСМИЧЕСКИЙ ДОНАТ</h1>
+            <p class="subtitle">Получите эксклюзивные привилегии в нашем Minecraft сервере</p>
+            <div class="free-label">ВРЕМЕННО БЕСПЛАТНО!</div>
+        </header>
+        
+        <div class="nav-buttons">
+            <a href="#" class="nav-button">Мой Телеграм канал</a>
+            <a href="#" class="nav-button">Моё био</a>
+            <a href="#" class="nav-button">Мои работы</a>
         </div>
-        <div class="nav-links" id="navLinks">
-            <a href="#" class="nav-link">Главная</a>
-            <a href="#plugins" class="nav-link">Плагины</a>
-            <a href="#features" class="nav-link">Преимущества</a>
-            <a href="#contact" class="nav-link">Контакты</a>
-            <a href="#" class="nav-link">Обо мне</a>
-        </div>
-    </nav>
-
-    <!-- Герой-секция -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Премиум плагины для вашего сервера Minecraft</h1>
-            <p class="hero-subtitle">Улучшите функциональность вашего сервера с нашими высококачественными плагинами. Разработано с любовью и заботой о деталях.</p>
-            <div class="hero-buttons">
-                <a href="#plugins" class="btn btn-accent">Смотреть плагины</a>
-                <a href="#contact" class="btn">Связаться с нами</a>
+        
+        <div class="donations">
+            <div class="donation-card">
+                <div class="card-particles" id="particles1"></div>
+                <div class="donation-header">
+                    <h2 class="donation-title">ПРИНЦ</h2>
+                    <span class="donation-price">299 ₽</span>
+                    <span class="donation-free">БЕСПЛАТНО!</span>
+                </div>
+                <div class="donation-content">
+                    <ul class="feature-list">
+                        <li>Префикс [Принц] в чате</li>
+                        <li>Доступ к VIP сундуку</li>
+                        <li>5 вейпов в день</li>
+                        <li>Полёт в хабе</li>
+                        <li>Доступ к эксклюзивным эмодзи</li>
+                    </ul>
+                    <button class="btn">Получить бесплатно</button>
+                </div>
+            </div>
+            
+            <div class="donation-card">
+                <div class="card-particles" id="particles2"></div>
+                <div class="donation-header">
+                    <h2 class="donation-title">DAKSPLAY</h2>
+                    <span class="donation-price">599 ₽</span>
+                    <span class="donation-free">БЕСПЛАТНО!</span>
+                </div>
+                <div class="donation-content">
+                    <ul class="feature-list">
+                        <li>Все привилегии [Принц]</li>
+                        <li>Префикс [DaksPlay] в чате</li>
+                        <li>10 вейпов в день</li>
+                        <li>Доступ к командам /fly и /god</li>
+                        <li>Расширенный инвентарь</li>
+                        <li>Особые частицы вокруг персонажа</li>
+                    </ul>
+                    <button class="btn">Получить бесплатно</button>
+                </div>
+            </div>
+            
+            <div class="donation-card">
+                <div class="card-particles" id="particles3"></div>
+                <div class="donation-header">
+                    <h2 class="donation-title">QLUZERY</h2>
+                    <span class="donation-price">999 ₽</span>
+                    <span class="donation-free">БЕСПЛАТНО!</span>
+                </div>
+                <div class="donation-content">
+                    <ul class="feature-list">
+                        <li>Все привилегии [DaksPlay]</li>
+                        <li>Префикс [Qluzery] в чате</li>
+                        <li>Неограниченные вейпы</li>
+                        <li>Доступ ко всем командам</li>
+                        <li>Эксклюзивные питомцы и скины</li>
+                        <li>Возможность создавать порталы</li>
+                        <li>Личный остров с чит-режимом</li>
+                    </ul>
+                    <button class="btn">Получить бесплатно</button>
+                </div>
             </div>
         </div>
-    </section>
-
-    <!-- Секция плагинов -->
-    <section id="plugins">
-        <h2 class="section-title">Наши плагины</h2>
-        <div class="plugins-container">
-            <!-- Плагин 1 -->
-            <div class="plugin-card">
-                <div class="plugin-image">
-                    <img src="/api/placeholder/400/320" alt="Плагин Beautiful Menu">
-                    <span class="plugin-badge">Хит продаж</span>
-                </div>
-                <div class="plugin-content">
-                    <h3 class="plugin-title">Beautiful Menu</h3>
-                    <p class="plugin-description">Стильное и удобное меню для вашего сервера с поддержкой анимаций и полной настройкой.</p>
-                    <span class="plugin-price">300 ₽</span>
-                    <div class="plugin-features">
-                        <div class="plugin-feature">
-                            <span class="plugin-feature-icon">✓</span>
-                            <span>Полная настройка внешнего вида</span>
-                        </div>
-                        <div class="plugin-feature">
-                            <span class="plugin-feature-icon">✓</span>
-                            <span>Интеграция с экономикой</span>
-                        </div>
-                        <div class="plugin-
+        
+        <footer>
+            <p class="footer-text">© 2025 Космический Донат Центр. Все права защищены.</p>
+            <div class="social-links">
+                <a href="#" class="social-link">✦ TG</a>
+                <a href="#" class="social-link">✦ DISCORD</a>
+                <a href="#" class="social-link">✦ VK</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Create stars
+        function createStars() {
+            const stars = document.getElementById('stars');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random position
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                
+                // Random size
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random twinkle delay
+                star.style.animationDelay = `${Math.random() * 4}s`;
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                
+                stars.appendChild(star);
+            }
+        }
+        
+        // Create shooting stars
+        function createShootingStars() {
+            setInterval(() => {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                
+                // Random starting position at the top of the screen
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * (window.innerHeight / 3);
+                
+                shootingStar.style.top = `${startY}px`;
+                shootingStar.style.left = `${startX}px`;
+                
+                // Random travel distance
+                const travelX = -300 - Math.random() * 300;
+                const travelY = 200 + Math.random() * 300;
+                
+                shootingStar.style.setProperty('--travel-x', `${travelX}px`);
+                shootingStar.style.setProperty('--travel-y', `${travelY}px`);
+                
+                // Animation duration
+                const duration = 1 + Math.random() * 2;
+                
+                // Apply animation
+                shootingStar.style.animation = `shootingStar ${duration}s forwards`;
+                
+                // Add to stars container
+                document.getElementById('stars').appendChild(shootingStar);
+                
+                // Remove after animation completes
+                setTimeout(() => {
+                    shootingStar.remove();
+                }, duration * 1000);
+                
+            }, 3000); // Create a new shooting star every 3 seconds
+        }
+        
+        // Create particles inside donation cards
+        function createCardParticles() {
+            const particlesContainers = [
+                document.getElementById('particles1'),
+                document.getElementById('particles2'),
+                document.getElementById('particles3')
+            ];
+            
+            particlesContainers.forEach((container, index) => {
+                for (let i = 0; i < 15; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    // Random position
+                    particle.style.top = `${Math.random() * 100}%`;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    
+                    // Random animation delay
+                    particle.style.animationDelay = `${Math.random() * 3}s`;
+                    
+                    container.appendChild(particle);
+                }
+            });
+        }
+        
+        // Add hover effects to donation cards
+        function addHoverEffects() {
+            const cards = document.querySelectorAll('.donation-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createShootingStars();
+            createCardParticles();
+            addHoverEffects();
+        });
+    </script>
+</body>
+</html>
