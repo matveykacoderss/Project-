@@ -3,780 +3,730 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Космический Донат Центр Minecraft</title>
+    <title>Мое Портфолио</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap');
-        
         :root {
-            --yellow: #FFD700;
-            --purple: #9932CC;
-            --red: #FF4500;
-            --dark: #0A0E17;
-            --light: #E8E8E8;
+            --primary-color: #2D1B4E;
+            --secondary-color: #4A2B7E;
+            --accent-color: #9353D3;
+            --light-accent: #B17FE3;
+            --text-color: #FFFFFF;
+            --text-secondary: #E0D2FF;
+            --background: #1A0F2E;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Exo 2', sans-serif;
+            scroll-behavior: smooth;
         }
         
         body {
-            background-color: var(--dark);
-            color: var(--light);
-            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            line-height: 1.6;
             overflow-x: hidden;
+        }
+        
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             position: relative;
-        }
-        
-        /* Анимированный космический фон */
-        .space-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
             overflow: hidden;
-            background: linear-gradient(125deg, #000235, #1a0042, #220047);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
         }
         
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .header-content {
+            text-align: center;
+            z-index: 2;
+            padding: 2rem;
+            animation: fadeIn 1.5s ease-in-out;
         }
         
-        .stars {
-            position: fixed;
+        .header-bg {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            z-index: 1;
         }
         
-        .star {
+        .header-bg span {
             position: absolute;
-            background-color: white;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            animation: twinkle var(--duration, 4s) infinite;
+            animation: float 15s linear infinite;
         }
         
-        .shooting-star {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background-color: white;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-            box-shadow: 0 0 10px 2px white;
-            opacity: 0;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-        
-        /* Туманности и космические объекты */
-        .nebula {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.15;
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        .nebula1 {
-            width: 300px;
-            height: 300px;
-            background-color: var(--purple);
-            top: 15%;
-            left: 10%;
-            animation: floatNebula 20s infinite alternate;
-        }
-        
-        .nebula2 {
-            width: 250px;
-            height: 250px;
-            background-color: var(--red);
-            bottom: 20%;
-            right: 15%;
-            animation: floatNebula 25s infinite alternate-reverse;
-        }
-        
-        .nebula3 {
-            width: 200px;
-            height: 200px;
-            background-color: var(--yellow);
-            top: 70%;
-            left: 25%;
-            animation: floatNebula 18s infinite alternate;
-        }
-        
-        @keyframes floatNebula {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, 20px) scale(1.1); }
-            100% { transform: translate(-30px, -20px) scale(0.9); }
-        }
-        
-        /* Анимация планеты */
-        .planet {
-            position: fixed;
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #330033, #660066);
-            box-shadow: 0 0 50px rgba(153, 50, 204, 0.5), inset 20px -20px 60px rgba(0, 0, 0, 0.6);
-            right: 10%;
-            top: 20%;
-            z-index: -1;
-            animation: rotatePlanet 40s linear infinite;
-        }
-        
-        .planet::before {
-            content: '';
-            position: absolute;
-            width: 180px;
-            height: 30px;
-            background: rgba(255, 215, 0, 0.2);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotateX(80deg);
-            border-radius: 50%;
-            filter: blur(5px);
-        }
-        
-        @keyframes rotatePlanet {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Shooting stars animation */
-        @keyframes shootingStar {
+        @keyframes float {
             0% {
-                transform: translateX(0) translateY(0);
+                transform: translateY(0) rotate(0deg);
                 opacity: 0;
             }
             10% {
                 opacity: 1;
             }
-            70% {
+            90% {
                 opacity: 1;
             }
             100% {
-                transform: translateX(var(--travel-x, -500px)) translateY(var(--travel-y, 300px));
+                transform: translateY(-1000px) rotate(720deg);
                 opacity: 0;
             }
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(26, 15, 46, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
         
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem 0;
+        nav.scrolled {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
             position: relative;
-            overflow: hidden;
-            border-bottom: 2px solid var(--purple);
-            background: rgba(10, 14, 23, 0.7);
-            backdrop-filter: blur(5px);
-            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--light-accent);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-color);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        section {
+            padding: 5rem 2rem;
+            min-height: 50vh;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         h1 {
             font-size: 3.5rem;
             margin-bottom: 1rem;
-            color: var(--yellow);
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            animation: glow 3s infinite alternate;
+            background: linear-gradient(to right, var(--accent-color), var(--light-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        @keyframes glow {
-            from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-            to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6); }
-        }
-        
-        .subtitle {
-            font-size: 1.5rem;
+        h2 {
+            font-size: 2.5rem;
             margin-bottom: 2rem;
-            color: var(--light);
-        }
-        
-        .free-label {
+            color: var(--light-accent);
+            position: relative;
             display: inline-block;
-            background-color: var(--red);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-            margin-bottom: 1rem;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .nav-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .nav-button {
-            background-color: rgba(10, 14, 23, 0.7);
-            border: 2px solid var(--purple);
-            color: var(--light);
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            backdrop-filter: blur(5px);
-        }
-        
-        .nav-button:before {
-            content: "";
+        h2::after {
+            content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(153, 50, 204, 0.4), transparent);
-            transition: all 0.6s ease;
-            z-index: -1;
-        }
-        
-        .nav-button:hover:before {
-            left: 100%;
-        }
-        
-        .nav-button:hover {
-            border-color: var(--yellow);
-            box-shadow: 0 0 15px rgba(153, 50, 204, 0.5);
-            transform: translateY(-3px);
-        }
-        
-        .donations {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-        
-        .donation-card {
-            background-color: rgba(10, 14, 23, 0.8);
-            backdrop-filter: blur(5px);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            position: relative;
-        }
-        
-        .donation-card:hover {
-            transform: translateY(-10px) scale(1.02);
-        }
-        
-        .donation-card:nth-child(1) {
-            border: 2px solid var(--yellow);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-        
-        .donation-card:nth-child(2) {
-            border: 2px solid var(--purple);
-            box-shadow: 0 0 20px rgba(153, 50, 204, 0.3);
-        }
-        
-        .donation-card:nth-child(3) {
-            border: 2px solid var(--red);
-            box-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
-        }
-        
-        .donation-card:nth-child(1):hover {
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-        }
-        
-        .donation-card:nth-child(2):hover {
-            box-shadow: 0 0 30px rgba(153, 50, 204, 0.5);
-        }
-        
-        .donation-card:nth-child(3):hover {
-            box-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
-        }
-        
-        /* Particles inside donation cards */
-        .card-particles {
-            position: absolute;
-            top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            bottom: -10px;
+            width: 50px;
+            height: 4px;
+            background: var(--accent-color);
         }
         
-        .donation-card:hover .card-particles {
-            opacity: 1;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            animation: floatParticle 3s infinite ease-in-out;
-        }
-        
-        .donation-card:nth-child(1) .particle {
-            background-color: var(--yellow);
-            box-shadow: 0 0 5px var(--yellow);
-        }
-        
-        .donation-card:nth-child(2) .particle {
-            background-color: var(--purple);
-            box-shadow: 0 0 5px var(--purple);
-        }
-        
-        .donation-card:nth-child(3) .particle {
-            background-color: var(--red);
-            box-shadow: 0 0 5px var(--red);
-        }
-        
-        @keyframes floatParticle {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-20px) translateX(10px); }
-        }
-        
-        .donation-header {
-            padding: 1.5rem;
-            text-align: center;
-            position: relative;
-        }
-        
-        .donation-card:nth-child(1) .donation-header {
-            background: linear-gradient(to right, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.4));
-        }
-        
-        .donation-card:nth-child(2) .donation-header {
-            background: linear-gradient(to right, rgba(153, 50, 204, 0.2), rgba(153, 50, 204, 0.4));
-        }
-        
-        .donation-card:nth-child(3) .donation-header {
-            background: linear-gradient(to right, rgba(255, 69, 0, 0.2), rgba(255, 69, 0, 0.4));
-        }
-        
-        .donation-title {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .donation-card:nth-child(1) .donation-title {
-            color: var(--yellow);
-        }
-        
-        .donation-card:nth-child(2) .donation-title {
-            color: var(--purple);
-        }
-        
-        .donation-card:nth-child(3) .donation-title {
-            color: var(--red);
-        }
-        
-        .donation-price {
+        p {
             font-size: 1.1rem;
-            text-decoration: line-through;
-            color: rgba(232, 232, 232, 0.7);
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-        
-        .donation-free {
-            color: var(--light);
-            font-weight: bold;
-            font-size: 1.3rem;
-        }
-        
-        .donation-content {
-            padding: 1.5rem;
-        }
-        
-        .feature-list {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-        
-        .feature-list li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: center;
-        }
-        
-        .feature-list li:before {
-            content: "✦";
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-        
-        .donation-card:nth-child(1) .feature-list li:before {
-            color: var(--yellow);
-        }
-        
-        .donation-card:nth-child(2) .feature-list li:before {
-            color: var(--purple);
-        }
-        
-        .donation-card:nth-child(3) .feature-list li:before {
-            color: var(--red);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 1.5rem;
         }
         
         .btn {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            text-align: center;
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
             border: none;
-            border-radius: 50px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(147, 83, 211, 0.4);
+        }
+        
+        .btn:hover {
+            background-color: var(--light-accent);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(147, 83, 211, 0.6);
+        }
+        
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .skill-card {
+            background: linear-gradient(145deg, var(--primary-color), var(--secondary-color));
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
             z-index: 1;
-            color: var(--dark);
-            background-color: var(--yellow);
         }
         
-        .donation-card:nth-child(1) .btn {
-            background-color: var(--yellow);
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(147, 83, 211, 0.1), transparent 70%);
+            z-index: -1;
+            transition: transform 0.8s ease;
         }
         
-        .donation-card:nth-child(2) .btn {
-            background-color: var(--purple);
-            color: var(--light);
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
         
-        .donation-card:nth-child(3) .btn {
-            background-color: var(--red);
-            color: var(--light);
+        .skill-card:hover::before {
+            transform: rotate(180deg);
         }
         
-        .btn:before {
-            content: "";
+        .skill-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--light-accent);
+        }
+        
+        .skill-level {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-progress {
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
+            left: 0;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: all 0.6s ease;
-            z-index: -1;
+            background: linear-gradient(to right, var(--accent-color), var(--light-accent));
+            border-radius: 10px;
+            transition: width 1.5s ease-in-out;
         }
         
-        .btn:hover:before {
-            left: 100%;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .donation-card:nth-child(1) .btn:hover {
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
-        }
-        
-        .donation-card:nth-child(2) .btn:hover {
-            box-shadow: 0 5px 15px rgba(153, 50, 204, 0.5);
-        }
-        
-        .donation-card:nth-child(3) .btn:hover {
-            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.5);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-            border-top: 2px solid var(--purple);
-            background: rgba(10, 14, 23, 0.7);
-            backdrop-filter: blur(5px);
+        .contact-form {
+            max-width: 600px;
+            margin: 3rem auto;
+            background: rgba(45, 27, 78, 0.3);
+            padding: 2rem;
             border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
         }
         
-        .footer-text {
-            margin-bottom: 1rem;
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light-accent);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(177, 127, 227, 0.3);
+            background-color: rgba(26, 15, 46, 0.5);
+            border-radius: 5px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(147, 83, 211, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
         }
         
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            margin-top: 3rem;
+            gap: 1.5rem;
         }
         
         .social-link {
-            color: var(--light);
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
         .social-link:hover {
-            color: var(--yellow);
+            transform: translateY(-5px);
+            background-color: var(--accent-color);
+            box-shadow: 0 10px 20px rgba(147, 83, 211, 0.4);
         }
         
-        @media (max-width: 768px) {
+        .social-link i {
+            font-size: 1.5rem;
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .social-link::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        
+        .social-link:hover::after {
+            width: 150%;
+            height: 150%;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            gap: 1.5rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--light-accent);
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
             }
             
-            .subtitle {
-                font-size: 1.2rem;
+            h2 {
+                font-size: 2rem;
             }
             
-            .nav-buttons {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                right: -100%;
                 flex-direction: column;
-                align-items: center;
+                background-color: rgba(26, 15, 46, 0.95);
+                width: 80%;
+                height: calc(100vh - 70px);
+                padding: 2rem;
+                transition: right 0.3s ease;
             }
             
-            .nav-button {
-                width: 100%;
-                text-align: center;
+            .nav-links.active {
+                right: 0;
             }
             
-            .planet {
-                width: 100px;
-                height: 100px;
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .mobile-menu.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            
+            .mobile-menu.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .mobile-menu.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="space-background"></div>
-    <div class="stars" id="stars"></div>
-    <div class="nebula nebula1"></div>
-    <div class="nebula nebula2"></div>
-    <div class="nebula nebula3"></div>
-    <div class="planet"></div>
-    
-    <div class="container">
-        <header>
-            <h1>КОСМИЧЕСКИЙ ДОНАТ</h1>
-            <p class="subtitle">Получите эксклюзивные привилегии в нашем Minecraft сервере</p>
-            <div class="free-label">ВРЕМЕННО БЕСПЛАТНО!</div>
-        </header>
-        
-        <div class="nav-buttons">
-            <a href="#" class="nav-button">Мой Телеграм канал</a>
-            <a href="#" class="nav-button">Моё био</a>
-            <a href="#" class="nav-button">Мои работы</a>
-        </div>
-        
-        <div class="donations">
-            <div class="donation-card">
-                <div class="card-particles" id="particles1"></div>
-                <div class="donation-header">
-                    <h2 class="donation-title">ПРИНЦ</h2>
-                    <span class="donation-price">299 ₽</span>
-                    <span class="donation-free">БЕСПЛАТНО!</span>
-                </div>
-                <div class="donation-content">
-                    <ul class="feature-list">
-                        <li>Префикс [Принц] в чате</li>
-                        <li>Доступ к VIP сундуку</li>
-                        <li>5 вейпов в день</li>
-                        <li>Полёт в хабе</li>
-                        <li>Доступ к эксклюзивным эмодзи</li>
-                    </ul>
-                    <button class="btn">Получить бесплатно</button>
-                </div>
-            </div>
-            
-            <div class="donation-card">
-                <div class="card-particles" id="particles2"></div>
-                <div class="donation-header">
-                    <h2 class="donation-title">DAKSPLAY</h2>
-                    <span class="donation-price">599 ₽</span>
-                    <span class="donation-free">БЕСПЛАТНО!</span>
-                </div>
-                <div class="donation-content">
-                    <ul class="feature-list">
-                        <li>Все привилегии [Принц]</li>
-                        <li>Префикс [DaksPlay] в чате</li>
-                        <li>10 вейпов в день</li>
-                        <li>Доступ к командам /fly и /god</li>
-                        <li>Расширенный инвентарь</li>
-                        <li>Особые частицы вокруг персонажа</li>
-                    </ul>
-                    <button class="btn">Получить бесплатно</button>
-                </div>
-            </div>
-            
-            <div class="donation-card">
-                <div class="card-particles" id="particles3"></div>
-                <div class="donation-header">
-                    <h2 class="donation-title">QLUZERY</h2>
-                    <span class="donation-price">999 ₽</span>
-                    <span class="donation-free">БЕСПЛАТНО!</span>
-                </div>
-                <div class="donation-content">
-                    <ul class="feature-list">
-                        <li>Все привилегии [DaksPlay]</li>
-                        <li>Префикс [Qluzery] в чате</li>
-                        <li>Неограниченные вейпы</li>
-                        <li>Доступ ко всем командам</li>
-                        <li>Эксклюзивные питомцы и скины</li>
-                        <li>Возможность создавать порталы</li>
-                        <li>Личный остров с чит-режимом</li>
-                    </ul>
-                    <button class="btn">Получить бесплатно</button>
-                </div>
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Мое Портфолио</a>
+            <ul class="nav-links">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#about">Обо мне</a></li>
+                <li><a href="#skills">Навыки</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
             </div>
         </div>
+    </nav>
+
+    <header id="home">
+        <div class="header-bg">
+            <!-- Динамические элементы фона будут созданы с помощью JavaScript -->
+        </div>
+        <div class="header-content">
+            <h1>Привет, я Разработчик</h1>
+            <p>Создаю уникальные цифровые решения и креативные проекты</p>
+            <a href="#contact" class="btn">Связаться со мной</a>
+        </div>
+    </header>
+
+    <section id="about" class="section">
+        <h2>Обо мне</h2>
+        <p>
+            Я опытный разработчик с глубокими знаниями в создании веб-приложений и интерактивных интерфейсов. 
+            Моя цель — создавать инновационные и эстетически приятные цифровые решения, которые решают реальные проблемы.
+        </p>
+        <p>
+            Я постоянно изучаю новые технологии и подходы, чтобы быть в курсе последних тенденций в сфере разработки. 
+            Мой опыт включает в себя работу над проектами различной сложности — от простых лендингов до комплексных 
+            веб-приложений с богатым функционалом.
+        </p>
+        <a href="#skills" class="btn">Мои навыки</a>
+    </section>
+
+    <section id="skills" class="section">
+        <h2>Мои навыки</h2>
+        <p>Вот некоторые из технологий и инструментов, с которыми я работаю:</p>
         
-        <footer>
-            <p class="footer-text">© 2025 Космический Донат Центр. Все права защищены.</p>
-            <div class="social-links">
-                <a href="#" class="social-link">✦ TG</a>
-                <a href="#" class="social-link">✦ DISCORD</a>
-                <a href="#" class="social-link">✦ VK</a>
+        <div class="skills-container">
+            <div class="skill-card">
+                <h3 class="skill-title">HTML5 & CSS3</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 0%" data-width="95%"></div>
+                </div>
+                <p>Создание адаптивных и доступных интерфейсов с использованием современных технологий.</p>
             </div>
-        </footer>
-    </div>
-    
+            
+            <div class="skill-card">
+                <h3 class="skill-title">JavaScript</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 0%" data-width="90%"></div>
+                </div>
+                <p>Разработка интерактивных и динамичных веб-приложений, анимаций и пользовательских интерфейсов.</p>
+            </div>
+            
+            <div class="skill-card">
+                <h3 class="skill-title">React</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 0%" data-width="85%"></div>
+                </div>
+                <p>Создание современных и производительных SPA с компонентным подходом.</p>
+            </div>
+            
+            <div class="skill-card">
+                <h3 class="skill-title">UI/UX Дизайн</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 0%" data-width="80%"></div>
+                </div>
+                <p>Проектирование удобных и интуитивно понятных пользовательских интерфейсов.</p>
+            </div>
+            
+            <div class="skill-card">
+                <h3 class="skill-title">Node.js</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 0%" data-width="75%"></div>
+                </div>
+                <p>Разработка серверной логики и API для веб-приложений.</p>
+            </div>
+            
+            <div class="skill-card">
+                <h3 class="skill-title">Git & GitHub</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 0%" data-width="85%"></div>
+                </div>
+                <p>Управление версиями кода и эффективная командная работа.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <h2>Контакты</h2>
+        <p>Если у вас есть интересный проект или вы хотите обсудить возможное сотрудничество, не стесняйтесь связаться со мной:</p>
+        
+        <div class="contact-form">
+            <div class="form-group">
+                <label for="name">Имя</label>
+                <input type="text" id="name" class="form-control" placeholder="Ваше имя">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" placeholder="Ваш email">
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Сообщение</label>
+                <textarea id="message" class="form-control" placeholder="Ваше сообщение"></textarea>
+            </div>
+            
+            <button type="submit" class="btn">Отправить</button>
+        </div>
+        
+        <div class="social-links">
+            <a href="https://t.me/yourchannel" class="social-link" target="_blank" title="Telegram">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a href="https://steamcommunity.com/id/yourprofile" class="social-link" target="_blank" title="Steam">
+                <i class="fab fa-steam"></i>
+            </a>
+            <a href="https://github.com/yourusername" class="social-link" target="_blank" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#home">Главная</a>
+                <a href="#about">Обо мне</a>
+                <a href="#skills">Навыки</a>
+                <a href="#contact">Контакты</a>
+            </div>
+            <p class="copyright">© 2025 Мое Портфолио. Все права защищены.</p>
+        </div>
+    </footer>
+
     <script>
-        // Create stars
-        function createStars() {
-            const stars = document.getElementById('stars');
-            const starCount = 200;
+        // Создание элементов фона
+        const headerBg = document.querySelector('.header-bg');
+        const numBubbles = 20;
+        
+        for (let i = 0; i < numBubbles; i++) {
+            const bubble = document.createElement('span');
+            const size = Math.random() * 50 + 10;
             
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                // Random position
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.left = `${Math.random() * 100}%`;
-                
-                // Random size
-                const size = Math.random() * 2 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                // Random twinkle delay
-                star.style.animationDelay = `${Math.random() * 4}s`;
-                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
-                
-                stars.appendChild(star);
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+            bubble.style.left = `${Math.random() * 100}%`;
+            bubble.style.top = `${Math.random() * 100 + 50}%`;
+            bubble.style.animationDuration = `${Math.random() * 20 + 10}s`;
+            bubble.style.animationDelay = `${Math.random() * 5}s`;
+            
+            headerBg.appendChild(bubble);
+        }
+        
+        // Анимация навигационной панели при прокрутке
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
-        }
+        });
         
-        // Create shooting stars
-        function createShootingStars() {
-            setInterval(() => {
-                const shootingStar = document.createElement('div');
-                shootingStar.className = 'shooting-star';
-                
-                // Random starting position at the top of the screen
-                const startX = Math.random() * window.innerWidth;
-                const startY = Math.random() * (window.innerHeight / 3);
-                
-                shootingStar.style.top = `${startY}px`;
-                shootingStar.style.left = `${startX}px`;
-                
-                // Random travel distance
-                const travelX = -300 - Math.random() * 300;
-                const travelY = 200 + Math.random() * 300;
-                
-                shootingStar.style.setProperty('--travel-x', `${travelX}px`);
-                shootingStar.style.setProperty('--travel-y', `${travelY}px`);
-                
-                // Animation duration
-                const duration = 1 + Math.random() * 2;
-                
-                // Apply animation
-                shootingStar.style.animation = `shootingStar ${duration}s forwards`;
-                
-                // Add to stars container
-                document.getElementById('stars').appendChild(shootingStar);
-                
-                // Remove after animation completes
-                setTimeout(() => {
-                    shootingStar.remove();
-                }, duration * 1000);
-                
-            }, 3000); // Create a new shooting star every 3 seconds
-        }
-        
-        // Create particles inside donation cards
-        function createCardParticles() {
-            const particlesContainers = [
-                document.getElementById('particles1'),
-                document.getElementById('particles2'),
-                document.getElementById('particles3')
-            ];
-            
-            particlesContainers.forEach((container, index) => {
-                for (let i = 0; i < 15; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
+        // Анимация появления секций при прокрутке
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                     
-                    // Random position
-                    particle.style.top = `${Math.random() * 100}%`;
-                    particle.style.left = `${Math.random() * 100}%`;
-                    
-                    // Random animation delay
-                    particle.style.animationDelay = `${Math.random() * 3}s`;
-                    
-                    container.appendChild(particle);
+                    // Анимация прогресс-баров для навыков
+                    if (entry.target.id === 'skills') {
+                        const progressBars = entry.target.querySelectorAll('.skill-progress');
+                        progressBars.forEach(bar => {
+                            setTimeout(() => {
+                                bar.style.width = bar.dataset.width;
+                            }, 200);
+                        });
+                    }
                 }
             });
-        }
+        }, { threshold: 0.1 });
         
-        // Add hover effects to donation cards
-        function addHoverEffects() {
-            const cards = document.querySelectorAll('.donation-card');
-            
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-10px) scale(1.02)';
-                });
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Мобильное меню
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
                 
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0) scale(1)';
-                });
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Закрыть мобильное меню при клике на ссылку
+                    mobileMenu.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    
+                    // Плавная прокрутка к элементу
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
             });
-        }
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            createStars();
-            createShootingStars();
-            createCardParticles();
-            addHoverEffects();
         });
     </script>
 </body>
